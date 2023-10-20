@@ -1,0 +1,426 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'favicon/favicon.ico' %}" type="image/x-icon">
+    
+    <!-- Libs CSS -->
+    <link rel="stylesheet" href="{% static 'css/libs.bundle.css' %}">
+    
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="{% static 'css/theme.bundle.css' %}">
+    
+    <!-- Title -->
+    <title>Shopper</title>
+  </head>
+  <body>
+
+    <!-- MODALS -->
+    <!-- Newsletter: Horizontal -->
+    <div class="modal fade" id="modalNewsletterHorizontal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+    
+          <!-- Close -->
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <i class="fe fe-x" aria-hidden="true"></i>
+          </button>
+    
+          <!-- Content -->
+          <div class="row gx-0">
+            <div class="col-12 col-lg-5">
+    
+              <!-- Image -->
+              <img class="img-fluid" src="assets/img/covers/cover-25.jpg" alt="...">
+    
+            </div>
+            <div class="col-12 col-lg-7 d-flex flex-column px-md-8">
+    
+              <!-- Body -->
+              <div class="modal-body my-auto py-10">
+    
+                <!-- Heading -->
+                <h4>Subscribe to Newsletter and get 15% Discount</h4>
+    
+                <!-- Text -->
+                <p class="mb-7 fs-lg">
+                  On your next purchase
+                </p>
+    
+                <!-- Form -->
+                <form>
+                  <div class="row gx-5">
+                    <div class="col">
+    
+                      <!-- Input -->
+                      <label class="visually-hidden" for="modalNewsletterHorizontalEmail">Enter Email *</label>
+                      <input class="form-control form-control-sm" id="modalNewsletterHorizontalEmail" type="email" placeholder="Enter Email *">
+    
+                    </div>
+                    <div class="col-auto">
+    
+                      <!-- Button -->
+                      <button class="btn btn-sm btn-dark" type="submit">
+                        <i class="fe fe-send"></i>
+                      </button>
+    
+                    </div>
+                  </div>
+                </form>
+    
+              </div>
+    
+              <!-- Footer -->
+              <div class="modal-footer pt-0">
+    
+                <!-- Checkbox -->
+                <div class="form-check">
+    
+                  <!-- Input -->
+                  <input class="form-check-input" id="modalNewsletterHorizontalCheckbox" type="checkbox">
+    
+                  <!-- Label -->
+                  <label class="form-check-label fs-xs" for="modalNewsletterHorizontalCheckbox">
+                    Prevent this Pop-up
+                  </label>
+    
+                </div>
+    
+              </div>
+    
+            </div>
+          </div>
+    
+        </div>
+    
+      </div>
+    </div>
+    
+    
+    
+    <!-- Password Reset -->
+    <div class="modal fade" id="modalPasswordReset" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+    
+          <!-- Close -->
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <i class="fe fe-x" aria-hidden="true"></i>
+          </button>
+    
+          <!-- Header-->
+          <div class="modal-header lh-fixed fs-lg">
+            <strong class="mx-auto">Forgot Password?</strong>
+          </div>
+    
+          <!-- Body -->
+          <div class="modal-body text-center">
+    
+            <!-- Text -->
+            <p class="mb-7 fs-sm text-gray-500">
+              Please enter your Email Address. You will receive a link
+              to create a new password via Email.
+            </p>
+    
+            <!-- Form -->
+            <form>
+    
+              <!-- Email -->
+              <div class="form-group">
+                <label class="visually-hidden" for="modalPasswordResetEmail">
+                  Email Address *
+                </label>
+                <input class="form-control form-control-sm" id="modalPasswordResetEmail" type="email" placeholder="Email Address *" required="">
+              </div>
+    
+              <!-- Button -->
+              <button class="btn btn-sm btn-dark">
+                Reset Password
+              </button>
+    
+            </form>
+    
+          </div>
+    
+        </div>
+    
+      </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div class="offcanvas offcanvas-end" id="modalSidebar" tabindex="-1" role="dialog" aria-hidden="true">
+    
+      <!-- Close -->
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
+        <i class="fe fe-x" aria-hidden="true"></i>
+      </button>
+    
+      <!-- Body -->
+      <div class="offcanvas-body px-10 my-auto">
+    
+        <!-- Nav -->
+        <ul class="nav nav-vertical nav-unstyled fs-2" id="sidebarNav">
+          <li class="nav-item">
+    
+            <!-- Toggle -->
+            <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="{% url 'home' %}">
+              Home
+            </a>
+    
+            
+    
+          </li>
+          <li class="nav-item">
+    
+            <!-- Toggle -->
+            <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#sidebarCatalog">
+              Catalog
+            </a>
+    
+           
+          </li>
+          
+    
+            <!-- Toggle -->
+            <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#sidebarPages">
+              Pages
+            </a>
+    
+            <!-- Collapse -->
+            <div class="collapse" id="sidebarPages" data-bs-parent="#sidebarNav">
+              <ul class="list-styled fs-lg py-3 mb-0">
+                <li class="list-styled-item">
+                  <a class="list-styled-link" href="{% url 'about' %}">About</a>
+                </li>
+                <li class="list-styled-item">
+                  <a class="list-styled-link" href="{% url 'contact' %}">Contact Us</a>
+                </li>
+              
+                <li class="list-styled-item">
+                  <a class="list-styled-link" href="{% url 'faq' %}">FAQ</a>
+                </li>
+                
+                
+              </ul>
+            </div>
+    
+          </li>
+      
+         
+        </ul>
+    
+      </div>
+    
+      <!-- Body -->
+      <div class="moda-body px-10 py-9">
+    
+        <!-- Social links -->
+        <ul class="list-inline">
+          <li class="list-inline-item">
+            <a class="text-gray-350" href="#!">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+          </li>
+          <li class="list-inline-item">
+            <a class="text-gray-350" href="#!">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </li>
+          <li class="list-inline-item">
+            <a class="text-gray-350" href="#!">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+          <li class="list-inline-item">
+            <a class="text-gray-350" href="#!">
+              <i class="fab fa-instagram"></i>
+            </a>
+          </li>
+          <li class="list-inline-item">
+            <a class="text-gray-350" href="#!">
+              <i class="fab fa-medium-m"></i>
+            </a>
+          </li>
+        </ul>
+    
+        <!-- Footer -->
+        <div class="fs-xxs text-gray-350">
+          © 2019 All rights reserved. Designed by Unvab.
+        </div>
+    
+      </div>
+    
+    </div>
+    
+
+  
+    <!-- CONTENT -->
+    <div class="container-fluid">
+      <div class="row gx-0">
+        <div class="col-12 col-lg-auto">
+
+          <!-- NAVBAR -->
+          <nav class="navbar navbar-expand-lg navbar-vertical navbar-light sticky-start px-lg-7 ">
+            <div class="container-fluid">
+          
+              <!-- Brand -->
+              <a class="navbar-brand" href="{% url 'home' %}">
+                Shopper.
+              </a>
+          
+              <!-- Toggler -->
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSidenavLeftCollapse" aria-controls="navbarSidenavLeftCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+          
+              <!-- Collapse -->
+              <div class="collapse navbar-collapse" id="navbarSidenavLeftCollapse">
+          
+                <!-- Nav -->
+                <ul class="navbar-nav fs-lg mb-6 my-lg-12" id="sidenavParent">
+                  <li class="nav-item">
+          
+                    <!-- Toggle -->
+                    <a class="nav-link"  href="{% url 'home' %}">
+                      Home
+                    </a>
+                  </li>
+                  <li class="nav-item">
+          
+                    <!-- Toggle -->
+                    <a class="nav-link"  href="{% url 'cart' %}">
+                      Cart
+                    </a>
+                  </li>
+            
+                  <li class="nav-item">
+    
+                  <li class="nav-item">
+          
+                    <!-- Toggle -->
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#sidenavPages">
+                      Pages
+                    </a>
+          
+                    <!-- Collapse -->
+                    <div class="collapse" id="sidenavPages" data-bs-parent="#sidenavParent">
+                      <ul class="list-styled fs-base fw-normal py-3 mb-0">
+                        <li class="list-styled-item">
+                          <a class="list-styled-link" href="{% url 'about' %}">About</a>
+                        </li>
+                        <li class="list-styled-item">
+                          <a class="list-styled-link" href="{% url 'contact' %}">Contact Us</a>
+                        </li>
+                        {% comment %} <li class="list-styled-item">
+                          <a class="list-styled-link" href="store-locator.html">Store Locator</a>
+                        </li> {% endcomment %}
+                        <li class="list-styled-item">
+                          <a class="list-styled-link" href="{% url 'faq' %}">FAQ</a>
+                        </li>
+                      </ul>
+                    </div>
+          
+                  </li>
+                  <li class="nav-item"><br>
+          
+                 
+          
+                  
+          
+                <!-- Social links -->
+                <ul class="list-inline">
+                  <li class="list-inline-item">
+                    <a class="text-gray-350" href="#!">
+                      <i class="fab fa-facebook-f"></i>
+                    </a>
+                  </li>
+                  <li class="list-inline-item">
+                    <a class="text-gray-350" href="#!">
+                      <i class="fab fa-youtube"></i>
+                    </a>
+                  </li>
+                  <li class="list-inline-item">
+                    <a class="text-gray-350" href="#!">
+                      <i class="fab fa-twitter"></i>
+                    </a>
+                  </li>
+                  <li class="list-inline-item">
+                    <a class="text-gray-350" href="#!">
+                      <i class="fab fa-instagram"></i>
+                    </a>
+                  </li>
+                  <li class="list-inline-item">
+                    <a class="text-gray-350" href="#!">
+                      <i class="fab fa-medium-m"></i>
+                    </a>
+                  </li>
+                </ul>
+          
+              </div>
+          
+            </div>
+          </nav>
+
+        </div>
+        <div class="col-12 col-lg">
+          {% block content %}{% endblock content %}
+       
+
+          <!-- FOOTER -->
+          <footer class="p-9 bg-dark ">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col">
+          
+                  <!-- Heading -->
+                  <h4 class="mb-7 mb-xl-0 text-white">Shopper.</h4>
+          
+                </div>
+                <div class="col-auto">
+          
+                  <!-- Links -->
+                  <ul class="list-inline mb-0">
+                    <li class="list-inline-item me-xl-7">
+                      <a class="text-gray-300" href="contact-us.html">Contact Us</a>
+                    </li>
+                    <li class="list-inline-item me-xl-7">
+                      <a class="text-gray-300" href="faq.html">FAQs</a>
+                    </li>
+                    <li class="list-inline-item me-xl-7">
+                      <a class="text-gray-300" data-bs-toggle="modal" href="#modalSizeChart">Size Guide</a>
+                    </li>
+                    <li class="list-inline-item me-xl-7">
+                      <a class="text-gray-300" href="shipping-and-returns.html">Shipping & Returns</a>
+                    </li>
+          
+                    <li class="list-inline-item">
+                      <a class="text-gray-300" href="about.html">Our Story</a>
+                    </li>
+                  </ul>
+          
+                </div>
+              </div>
+            </div>
+          </footer>
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+    <!-- Map (replace the API key to enable) -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnKt8_N4-FKOnhI_pSaDL7g_g-XI1-R9E"></script>
+    
+    <!-- Vendor JS -->
+    <script src="{% static 'js/vendor.bundle.js' %}"></script>
+    
+    <!-- Theme JS -->
+    <script src="{% static 'js/theme.bundle.js' %}"></script>
+
+  </body>
+</html>
