@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 
 
-from .models import Catalog, Brand, Product, Cart
+from .models import Catalog, Brand, Product, Cart, Review
 
 
 def home(request):
@@ -42,8 +42,15 @@ def page(request, page=1):
 def product(request, pk):
     product = get_object_or_404(Product, id=pk)
     # product = Product.objects.get(id=pk)
+    revie = product.review_set.all()
+    reviews = product.review_set.all()[:4]
+
+    
     context = {
         "product": product,
+        "reviews": reviews,
+        "len": len(revie),
+    
     }
     return render(request, "product.html", context)
 
@@ -66,6 +73,25 @@ def add_cart(request, pk):
     return redirect("home")
 
 
+def add_review(request, pk):
+    product = Product.objects.get(id=pk)
+
+    if request.method == "POST":
+        title = request.POST["title"]
+        review = request.POST["review"]
+        rating = request.POST["rating"]
+
+        reviews = Review(title=title,
+                         review=review,
+                         rating=rating,
+                         product=product,
+                         user=request.user)
+        reviews.save()
+
+    return HttpResponseRedirect(redirect_to=request.META.get('HTTP_REFERER'))
+    
+
+    
 
 def cart(request):
     cart = Cart.objects.all()

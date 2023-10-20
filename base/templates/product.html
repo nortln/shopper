@@ -184,12 +184,6 @@
                     </div>
                 
 
-                  <!-- Text -->
-                  <p>
-                    <span class="text-gray-500">Is your size/color sold out?</span>
-                    <a class="text-reset text-decoration-underline" data-bs-toggle="modal" href="#modalWaitList">Join the Wait List!</a>
-                  </p>
-
                   <!-- Share -->
                   <p class="mb-0">
                     <span class="me-4">Share:</span>
@@ -246,36 +240,9 @@
                     </div>
                     <div class="col-12 col-md-6">
 
-                      <!-- List -->
-                      <ul class="list list-unstyled mb-md-0 text-gray-500">
-                        <li>
-                          <strong class="text-body">SKU</strong>: #61590437
-                        </li>
-                        <li>
-                          <strong class="text-body">Occasion</strong>: Lifestyle, Sport
-                        </li>
-                        <li>
-                          <strong class="text-body">Country</strong>: Italy
-                        </li>
-                      </ul>
-
+               
                     </div>
-                    <div class="col-12 col-md-6">
-
-                      <!-- List -->
-                      <ul class="list list-unstyled mb-0">
-                        <li>
-                          <strong>Outer</strong>: Leather 100%, Polyamide 100%
-                        </li>
-                        <li>
-                          <strong>Lining</strong>: Polyester 100%
-                        </li>
-                        <li>
-                          <strong>CounSoletry</strong>: Rubber 100%
-                        </li>
-                      </ul>
-
-                    </div>
+                 
                   </div>
                 </div>
               </div>
@@ -525,27 +492,12 @@
           <div class="row align-items-center">
             <div class="col-12 col-md-auto">
 
-              <!-- Dropdown -->
-              <div class="dropdown mb-4 mb-md-0">
-
-                <!-- Toggle -->
-                <a class="dropdown-toggle text-reset" data-bs-toggle="dropdown" href="#">
-                  <strong>Sort by: Newest</strong>
-                </a>
-
-                <!-- Menu -->
-                <div class="dropdown-menu mt-3">
-                  <a class="dropdown-item" href="#!">Newest</a>
-                  <a class="dropdown-item" href="#!">Oldest</a>
-                </div>
-
-              </div>
-
+            
             </div>
             <div class="col-12 col-md text-md-center">
 
               <!-- Rating -->
-              <div class="rating text-dark h6 mb-4 mb-md-0" data-value="4">
+              <div class="rating text-dark h6 mb-4 mb-md-0" data-value="3">
                 <div class="rating-item">
                   <i class="fas fa-star"></i>
                 </div>
@@ -564,7 +516,7 @@
               </div>
 
               <!-- Count -->
-              <strong class="fs-sm ms-2">Reviews (3)</strong>
+              <strong class="fs-sm ms-2">Reviews ({{len}})</strong>
 
             </div>
             <div class="col-12 col-md-auto">
@@ -584,7 +536,8 @@
             <hr class="my-8">
 
             <!-- Form -->
-            <form>
+            <form method="post" action="{% url "add_review" product.id %}">
+              {% csrf_token %}
               <div class="row">
                 <div class="col-12 mb-6 text-center">
 
@@ -597,7 +550,7 @@
                   <div class="rating-form">
 
                     <!-- Input -->
-                    <input class="rating-input" type="range" min="1" max="5" value="5">
+                    <input class="rating-input" type="range" min="1" max="5" value="5" name="rating">
 
                     <!-- Rating -->
                     <div class="rating h5 text-dark" data-value="5">
@@ -621,30 +574,13 @@
                   </div>
 
                 </div>
-                <div class="col-12 col-md-6">
-
-                  <!-- Name -->
-                  <div class="form-group">
-                    <label class="visually-hidden" for="reviewName">Your Name:</label>
-                    <input class="form-control form-control-sm" id="reviewName" type="text" placeholder="Your Name *" required="">
-                  </div>
-
-                </div>
-                <div class="col-12 col-md-6">
-
-                  <!-- Email -->
-                  <div class="form-group">
-                    <label class="visually-hidden" for="reviewEmail">Your Email:</label>
-                    <input class="form-control form-control-sm" id="reviewEmail" type="email" placeholder="Your Email *" required="">
-                  </div>
-
-                </div>
+               
                 <div class="col-12">
 
                   <!-- Name -->
                   <div class="form-group">
                     <label class="visually-hidden" for="reviewTitle">Review Title:</label>
-                    <input class="form-control form-control-sm" id="reviewTitle" type="text" placeholder="Review Title *" required="">
+                    <input class="form-control form-control-sm" id="reviewTitle" type="text" name="title" placeholder="Review Title *" required="">
                   </div>
 
                 </div>
@@ -653,7 +589,7 @@
                   <!-- Name -->
                   <div class="form-group">
                     <label class="visually-hidden" for="reviewText">Review:</label>
-                    <textarea class="form-control form-control-sm" id="reviewText" rows="5" placeholder="Review *" required=""></textarea>
+                    <textarea class="form-control form-control-sm" id="reviewText" rows="5" name="review" placeholder="Review *" required=""></textarea>
                   </div>
 
                 </div>
@@ -670,6 +606,7 @@
 
           </div>
 
+          {% for review in reviews %}
           <!-- Reviews -->
           <div class="mt-8">
 
@@ -717,7 +654,7 @@
 
                         <!-- Time -->
                         <span class="fs-xs text-muted">
-                          Logan Edwards, <time datetime="2019-07-25">25 Jul 2019</time>
+                          {{review.user}}, <time datetime="2019-07-25">{{review.date}}</time>
                         </span>
 
                       </div>
@@ -725,293 +662,29 @@
 
                     <!-- Title -->
                     <p class="mb-2 fs-lg fw-bold">
-                      So cute!
+                      {{review.title}}
                     </p>
 
                     <!-- Text -->
                     <p class="text-gray-500">
-                      Justo ut diam erat hendrerit. Morbi porttitor, per eu. Sodales curabitur diam sociis. Taciti lobortis nascetur. Ante laoreet odio hendrerit.
-                      Dictumst curabitur nascetur lectus potenti dis sollicitudin habitant quis vestibulum.
+                      {{review.description}}
                     </p>
 
                     <!-- Footer -->
-                    <div class="row align-items-center">
-                      <div class="col-auto d-none d-lg-block">
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm">Was this review helpful?</p>
-
-                      </div>
-                      <div class="col-auto me-auto">
-
-                        <!-- Rate -->
-                        <div class="rate">
-                          <a class="rate-item" data-toggle="vote" data-count="3" href="#" role="button">
-                            <i class="fe fe-thumbs-up"></i>
-                          </a>
-                          <a class="rate-item" data-toggle="vote" data-count="0" href="#" role="button">
-                            <i class="fe fe-thumbs-down"></i>
-                          </a>
-                        </div>
-
-                      </div>
-                      <div class="col-auto d-none d-lg-block">
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm">Comments (0)</p>
-
-                      </div>
-                      <div class="col-auto">
-
-                        <!-- Button -->
-                        <a class="btn btn-xs btn-outline-border" href="#!">
-                          Comment
-                        </a>
-
-                      </div>
+                    
+                  
+                    
                     </div>
 
                   </div>
                 </div>
               </div>
             </div>
-
-            <!-- Review -->
-            <div class="review">
-
-              <!-- Body -->
-              <div class="review-body">
-                <div class="row">
-                  <div class="col-12 col-md-auto">
-
-                    <!-- Avatar -->
-                    <div class="avatar avatar-xxl mb-6 mb-md-0">
-                      <span class="avatar-title rounded-circle">
-                        <i class="fa fa-user"></i>
-                      </span>
-                    </div>
-
-                  </div>
-                  <div class="col-12 col-md">
-
-                    <!-- Header -->
-                    <div class="row mb-6">
-                      <div class="col-12">
-
-                        <!-- Rating -->
-                        <div class="rating fs-sm text-dark" data-value="3">
-                          <div class="rating-item">
-                            <i class="fas fa-star"></i>
-                          </div>
-                          <div class="rating-item">
-                            <i class="fas fa-star"></i>
-                          </div>
-                          <div class="rating-item">
-                            <i class="fas fa-star"></i>
-                          </div>
-                          <div class="rating-item">
-                            <i class="fas fa-star"></i>
-                          </div>
-                          <div class="rating-item">
-                            <i class="fas fa-star"></i>
-                          </div>
-                        </div>
-
-                      </div>
-                      <div class="col-12">
-
-                        <!-- Time -->
-                        <span class="fs-xs text-muted">
-                          Sophie Casey, <time datetime="2019-07-07">07 Jul 2019</time>
-                        </span>
-
-                      </div>
-                    </div>
-
-                    <!-- Title -->
-                    <p class="mb-2 fs-lg fw-bold">
-                      Cute, but too small
-                    </p>
-
-                    <!-- Text -->
-                    <p class="text-gray-500">
-                      Shall good midst can't. Have fill own his multiply the divided. Thing great. Of heaven whose signs.
-                    </p>
-
-                    <!-- Footer -->
-                    <div class="row align-items-center">
-                      <div class="col-auto d-none d-lg-block">
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm">Was this review helpful?</p>
-
-                      </div>
-                      <div class="col-auto me-auto">
-
-                        <!-- Rate -->
-                        <div class="rate">
-                          <a class="rate-item" data-toggle="vote" data-count="2" href="#" role="button">
-                            <i class="fe fe-thumbs-up"></i>
-                          </a>
-                          <a class="rate-item" data-toggle="vote" data-count="1" href="#" role="button">
-                            <i class="fe fe-thumbs-down"></i>
-                          </a>
-                        </div>
-
-                      </div>
-                      <div class="col-auto d-none d-lg-block">
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm">Comments (1)</p>
-
-                      </div>
-                      <div class="col-auto">
-
-                        <!-- Button -->
-                        <a class="btn btn-xs btn-outline-border" href="#!">
-                          Comment
-                        </a>
-
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-
-              <!-- Child review -->
-              <div class="review review-child">
-                <div class="review-body">
-
-                  <!-- Content -->
-                  <div class="row">
-                    <div class="col-12 col-md-auto">
-
-                      <!-- Avatar -->
-                      <div class="avatar avatar-xxl mb-6 mb-md-0">
-                        <span class="avatar-title rounded-circle">
-                          <i class="fa fa-user"></i>
-                        </span>
-                      </div>
-
-                    </div>
-                    <div class="col-12 col-md">
-
-                      <!-- Header -->
-                      <div class="row mb-6">
-                        <div class="col-12">
-
-                          <!-- Rating -->
-                          <div class="rating fs-sm text-dark" data-value="4">
-                            <div class="rating-item">
-                              <i class="fas fa-star"></i>
-                            </div>
-                            <div class="rating-item">
-                              <i class="fas fa-star"></i>
-                            </div>
-                            <div class="rating-item">
-                              <i class="fas fa-star"></i>
-                            </div>
-                            <div class="rating-item">
-                              <i class="fas fa-star"></i>
-                            </div>
-                            <div class="rating-item">
-                              <i class="fas fa-star"></i>
-                            </div>
-                          </div>
-
-                        </div>
-                        <div class="col-12">
-
-                          <!-- Time -->
-                          <span class="fs-xs text-muted">
-                            William Stokes, <time datetime="2019-07-14">14 Jul 2019</time>
-                          </span>
-
-                        </div>
-                      </div>
-
-                      <!-- Title -->
-                      <p class="mb-2 fs-lg fw-bold">
-                        Very good
-                      </p>
-
-                      <!-- Text -->
-                      <p class="text-gray-500">
-                        Made face lights yielding forth created for image behold blessed seas.
-                      </p>
-
-                      <!-- Footer -->
-                      <div class="row align-items-center">
-                        <div class="col-auto d-none d-lg-block">
-
-                          <!-- Text -->
-                          <p class="mb-0 fs-sm">Was this review helpful?</p>
-
-                        </div>
-                        <div class="col-auto me-auto">
-
-                          <!-- Rate -->
-                          <div class="rate">
-                            <a class="rate-item" data-toggle="vote" data-count="7" href="#" role="button">
-                              <i class="fe fe-thumbs-up"></i>
-                            </a>
-                            <a class="rate-item" data-toggle="vote" data-count="0" href="#" role="button">
-                              <i class="fe fe-thumbs-down"></i>
-                            </a>
-                          </div>
-
-                        </div>
-                        <div class="col-auto d-none d-lg-block">
-
-                          <!-- Text -->
-                          <p class="mb-0 fs-sm">Comments (0)</p>
-
-                        </div>
-                        <div class="col-auto">
-
-                          <!-- Button -->
-                          <a class="btn btn-xs btn-outline-border" href="#!">
-                            Comment
-                          </a>
-
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-            </div>
-
+            
+            
+            
           </div>
-
-          <!-- Pagination -->
-          <nav class="d-flex justify-content-center mt-9">
-            <ul class="pagination pagination-sm text-gray-400">
-              <li class="page-item">
-                <a class="page-link page-link-arrow" href="#">
-                  <i class="fa fa-caret-left"></i>
-                </a>
-              </li>
-              <li class="page-item active">
-                <a class="page-link" href="#">1</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#">2</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#">3</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link page-link-arrow" href="#">
-                  <i class="fa fa-caret-right"></i>
-                </a>
-              </li>
-            </ul>
-          </nav>
+          {% endfor %}
 
         </div>
       </div>
