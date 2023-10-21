@@ -102,7 +102,7 @@
                 <div class="col-auto">
 
                   <!-- Rating -->
-                  <div class="rating fs-xs text-dark" data-value="4">
+                  <div class="rating fs-xs text-dark" data-value="{{average}}">
                     <div class="rating-item">
                       <i class="fas fa-star"></i>
                     </div>
@@ -121,7 +121,7 @@
                   </div>
 
                   <a class="fs-sm text-reset ms-2" href="#reviews">
-                    Reviews (3)
+                    Reviews ({{len}})
                   </a>
 
                 </div>
@@ -496,8 +496,9 @@
             </div>
             <div class="col-12 col-md text-md-center">
 
+            
               <!-- Rating -->
-              <div class="rating text-dark h6 mb-4 mb-md-0" data-value="3">
+              <div class="rating text-dark h6 mb-4 mb-md-0" data-value="{{average}}">
                 <div class="rating-item">
                   <i class="fas fa-star"></i>
                 </div>
@@ -550,7 +551,7 @@
                   <div class="rating-form">
 
                     <!-- Input -->
-                    <input class="rating-input" type="range" min="1" max="5" value="5" name="rating">
+                    <input class="rating-input" type="range" min="1" max="5" value="{{average}}" name="rating">
 
                     <!-- Rating -->
                     <div class="rating h5 text-dark" data-value="5">
@@ -631,7 +632,7 @@
                       <div class="col-12">
 
                         <!-- Rating -->
-                        <div class="rating fs-sm text-dark" data-value="5">
+                        <div class="rating fs-sm text-dark" data-value="{{review.rating}}">
                           <div class="rating-item">
                             <i class="fas fa-star"></i>
                           </div>
@@ -667,7 +668,7 @@
 
                     <!-- Text -->
                     <p class="text-gray-500">
-                      {{review.description}}
+                      {{review.review}}
                     </p>
 
                     <!-- Footer -->

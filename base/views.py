@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
+import numpy as np
 
 
 from .models import Catalog, Brand, Product, Cart, Review
@@ -41,15 +42,27 @@ def page(request, page=1):
 
 def product(request, pk):
     product = get_object_or_404(Product, id=pk)
-    # product = Product.objects.get(id=pk)
+   
     revie = product.review_set.all()
-    reviews = product.review_set.all()[:4]
+    review = product.review_set.all()
+    reviews = product.review_set.all().order_by('-id')[:4]
+    all = []
+    
+    print(reviews)
+    for rate in review:
+        all.append(rate.rating)
+    
+    print(all)
+
+    average = round(np.mean(all))
+    print(average)
 
     
     context = {
         "product": product,
-        "reviews": reviews,
+        "reviews": reviews[:4],
         "len": len(revie),
+        "average": average,
     
     }
     return render(request, "product.html", context)
