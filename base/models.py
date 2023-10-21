@@ -41,7 +41,7 @@ class Product(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
-    cataglog = models.ForeignKey(Catalog, on_delete=models.CASCADE)
+    catalog = models.ForeignKey(Catalog, on_delete=models.CASCADE)
     price = models.IntegerField()
     weight = models.IntegerField(default=None, null=True, blank=True)
     color = models.ForeignKey(Color, on_delete=models.CASCADE, default=None, blank=True, null=True)

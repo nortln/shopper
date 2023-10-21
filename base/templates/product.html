@@ -315,13 +315,14 @@
 
           <!-- Items -->
           <div class="row">
+            {% for item in recommended %}
             <div class="col-6 col-sm-6 col-md-4">
 
               <!-- Card -->
               <div class="card mb-7 mb-md-0">
 
                 <!-- Image -->
-                <img class="card-img-top" src="assets/img/products/product-80.jpg" alt="...">
+                <img class="card-img-top" src="{% static item.image.url %}" alt="...">
 
                 <!-- Body -->
                 <div class="card-body px-0 pb-0 bg-white">
@@ -329,13 +330,13 @@
                     <div class="col">
 
                       <!-- Title -->
-                      <a class="d-block fw-bold text-body" href="{% url 'product' product.id %}">
-                        Leather Women's Belt
+                      <a class="d-block fw-bold text-body" href="{% url 'product' item.id %}">
+                        {{item.title}}
                       </a>
 
                       <!-- Category -->
                       <a class="fs-xs text-muted" href="{% url 'home' %}">
-                        Accessories
+                        {{item.catalog}}
                       </a>
 
                     </div>
@@ -343,7 +344,7 @@
 
                       <!-- Price -->
                       <div class="fs-sm fw-bold text-muted">
-                        $39.00
+                        ${{item.price}}
                       </div>
 
                     </div>
@@ -353,125 +354,8 @@
               </div>
 
             </div>
-            <div class="col-6 col-sm-6 col-md-4">
-
-              <!-- Card -->
-              <div class="card mb-7 mb-md-0">
-
-                <!-- Badge -->
-                <div class="badge bg-white text-body card-badge card-badge-start text-uppercase">
-                  New
-                </div>
-
-                <!-- Image -->
-                <img class="card-img-top" src="assets/img/products/product-86.jpg" alt="...">
-
-                <!-- Body -->
-                <div class="card-body px-0 pb-0 bg-white">
-                  <div class="row gx-0">
-                    <div class="col">
-
-                      <!-- Title -->
-                      <a class="d-block fw-bold text-body" href="{% url 'product' product.id %}">
-                        Heel strappy Sandals
-                      </a>
-
-                      <!-- Category -->
-                      <a class="fs-xs text-muted" href="{% url 'home' %}">
-                        Shoes
-                      </a>
-
-                    </div>
-                    <div class="col-auto">
-
-                      <!-- Price -->
-                      <div class="fs-sm fw-bold text-muted">
-                        $90.00
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-            <div class="col-6 col-sm-6 col-md-4">
-
-              <!-- Card -->
-              <div class="card mb-0">
-
-                <!-- Image -->
-                <img class="card-img-top" src="assets/img/products/product-85.jpg" alt="...">
-
-                <!-- Body -->
-                <div class="card-body px-0 pb-0 bg-white">
-                  <div class="row gx-0">
-                    <div class="col">
-
-                      <!-- Title -->
-                      <a class="d-block fw-bold text-body" href="{% url 'product' product.id %}">
-                        Leather key Case
-                      </a>
-
-                      <!-- Category -->
-                      <a class="fs-xs text-muted" href="wishlist">
-                        Bags
-                      </a>
-
-                    </div>
-                    <div class="col-auto">
-
-                      <!-- Price -->
-                      <div class="fs-sm fw-bold text-muted">
-                        $29.00
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-            <div class="col-6 col-sm-6 col-md-4 d-md-none">
-
-              <!-- Card -->
-              <div class="card mb-0">
-
-                <!-- Image -->
-                <img class="card-img-top" src="assets/img/products/product-87.jpg" alt="...">
-
-                <!-- Body -->
-                <div class="card-body px-0 pb-0 bg-white">
-                  <div class="row gx-0">
-                    <div class="col">
-
-                      <!-- Title -->
-                      <a class="d-block fw-bold text-body" href="{% url 'product' product.id %}">
-                        White Summer Hat
-                      </a>
-
-                      <!-- Category -->
-                      <a class="fs-xs text-muted" href="{% url 'home' %}">
-                        Hats
-                      </a>
-
-                    </div>
-                    <div class="col-auto">
-
-                      <!-- Price -->
-                      <div class="fs-sm fw-bold text-muted">
-                        $15.00
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
+            {% endfor %}
+           
           </div>
 
         </div>

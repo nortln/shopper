@@ -46,6 +46,8 @@ def product(request, pk):
     revie = product.review_set.all()
     review = product.review_set.all()
     reviews = product.review_set.all().order_by('-id')[:4]
+    recommended = Product.objects.filter(catalog=product.catalog).exclude(id=pk)
+    print(recommended)
     all = []
     
     print(reviews)
@@ -53,9 +55,11 @@ def product(request, pk):
         all.append(rate.rating)
     
     print(all)
-
-    average = round(np.mean(all))
-    print(average)
+    if all != []:
+        average = round(np.mean(all))
+        print(average)
+    else:
+        average = 5
 
     
     context = {
@@ -63,6 +67,7 @@ def product(request, pk):
         "reviews": reviews[:4],
         "len": len(revie),
         "average": average,
+        "recommended": recommended,
     
     }
     return render(request, "product.html", context)
@@ -72,19 +77,33 @@ def add_cart(request, pk):
     if request.method == "POST":
         product = Product.objects.get(id=pk)
         cart_products = Cart.product.get_queryset()
-        if product not in cart_products:
-            cart = Cart(user=request.user,
-                product=product,
-                quantity=request.POST["quantity"])
-            cart.user = request.user
-            cart.save()
-        else:
-            cart_product = Cart.objects.get(product=product)
-            cart_product.quantity += int(request.POST["quantity"])
+        quantity=request.POST["quantity"]
+        # if product not in cart_products:
+        #     cart = Cart(product=product,
+        #     cart.user = request.user
+        #     cart_product.quantity += int(request.POST["quantity"])
+        #     cart.save()
+        try:
+            cart_product = Cart.objects.get(user=request.user, product=product)
+            cart_product.quantity += int(quantity)
+            cart_product.save()
+        except Cart.DoesNotExist:
+            cart_product = Cart(product=product, quantity=quantity)
+            cart_product.user = request.user
             cart_product.save()
     
-    return redirect("home")
+    return redirect(request.META.get("HTTP_REFERER"))
 
+
+def update_cart(request, pk):
+    product = get_object_or_404(Product, id=pk)
+    cart = get_object_or_404(Cart, product=product, user=request.user)
+    if request.method == "POST":
+        quantity = request.POST["update_cart"]
+        cart.quantity = quantity
+        cart.save()
+
+    return redirect(request.META.get("HTTP_REFERER"))
 
 def add_review(request, pk):
     product = Product.objects.get(id=pk)
@@ -107,11 +126,19 @@ def add_review(request, pk):
     
 
 def cart(request):
-    cart = Cart.objects.all()
+    carts = Cart.objects.filter(user=request.user)
+    total_price = []
+    for cart in carts:
+        total = cart.quantity * cart.product.price
+        total_price.append(total)
+
+    total = sum(total_price)
+
     context = {
-        "cart": cart,
+        "carts": carts,
+        "total": total,
     }
-    return render(request, "cart.html")
+    return render(request, "cart.html", context)
 
 
 
@@ -184,7 +211,7 @@ def register_user(request):
                     user.set_password(password)
                     user.save()
                     login(request, user)
-                    redirect("home")
+                    return redirect("home")
             else:
                 context = {
                     "register_error_message": "Email Already Exists",
