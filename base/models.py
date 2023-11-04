@@ -7,7 +7,6 @@ class AddressBook(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=20)
     address = models.TextField()
-    image = models.ImageField(upload_to="img/users", storage=FileSystemStorage("base/static"))
 
     def __str__(self):
         return f"{self.address}"

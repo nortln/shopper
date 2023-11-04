@@ -97,7 +97,8 @@
             </button>
 
             <!-- Menu -->
-            <form class="dropdown-menu">
+            <form class="dropdown-menu" method="get" action="{% url "home" %}">
+              {% comment %} {% csrf_token %} {% endcomment %}
               <div class="card">
                 <div class="card-body">
 
@@ -107,27 +108,25 @@
                       <input class="form-check-input" id="sortOne" name="sort" type="radio" value="Default">
                       <label class="form-check-label" for="sortOne">Default</label>
                     </div>
+                    {% comment %} <div class="form-check form-check-text mb-3">
+                      <input class="form-check-input" id="sortTwo" name="sort" type="radio" value="Best Rating">
+                      <label class="form-check-label" for="sortTwo">Best Rating</label>
+                    </div> {% endcomment %}
                     <div class="form-check form-check-text mb-3">
-                      <input class="form-check-input" id="sortTwo" name="sort" type="radio" value="Newest">
-                      <label class="form-check-label" for="sortTwo">Newest</label>
+                      <input class="form-check-input" id="sortThree" name="sort" type="radio" value="Highest Price">
+                      <label class="form-check-label" for="sortThree">Highest Price</label>
                     </div>
                     <div class="form-check form-check-text mb-3">
-                      <input class="form-check-input" id="sortThree" name="sort" type="radio" value="Most Popular">
-                      <label class="form-check-label" for="sortThree">Most Popular</label>
-                    </div>
-                    <div class="form-check form-check-text mb-3">
-                      <input class="form-check-input" id="sortFour" name="sort" type="radio" value="Default Price">
-                      <label class="form-check-label" for="sortFour">Default Price</label>
-                    </div>
-                    <div class="form-check form-check-text">
-                      <input class="form-check-input" id="sortFive" name="sort" type="radio" value="Highest Price">
-                      <label class="form-check-label" for="sortFive">Highest Price</label>
+                      <input class="form-check-input" id="sortFour" name="sort" type="radio" value="Lowest Price">
+                      <label class="form-check-label" for="sortFour">Lowest Price</label>
                     </div>
                   </div>
+                  <button class="btn btn-dark btn-sm ms-2" type="submit">Apply Filter</button>
 
                 </div>
               </div>
             </form>
+
 
           </div>
           <div class="btn-group dropdown">
@@ -138,7 +137,7 @@
             </button>
 
             <!-- Menu -->
-            <form class="dropdown-menu">
+            <form class="dropdown-menu" action="{% url "home" %}" method="get">
               <div class="card">
                 <div class="card-body">
 
@@ -182,7 +181,7 @@
             </button>
 
             <!-- Menu -->
-            <form class="dropdown-menu">
+            <form class="dropdown-menu" action="{% url "home" %}" method="GET">
               <div class="card">
                 <div class="card-body">
 
@@ -207,8 +206,8 @@
                       <div class="list">
                         {% for brand in brands %}
                         <div class="form-check mb-3">
-                          <input class="form-check-input" id="brandOne" type="checkbox">
-                          <label class="form-check-label name" for="brandOne">
+                          <input class="form-check-input" id="brandOne" type="checkbox" name="brand" value="{{brand}}">
+                          <label class="form-check-label name"  for="brandOne">
                             {{brand.brand}}
                           </label>
                         </div>
@@ -216,7 +215,7 @@
                       
                       </div>
                     </div>
-
+                   
                   </div>
 
                 </div>
@@ -277,36 +276,53 @@
       {% endfor %}
     
     </div>
+    {% if request.user == 'clinton' %}
+    <a>Add Product</a>
+    {% endif %}
     
     <div class="row">
       <div class="col-12">
-
-        <!-- Progress -->
-        <div class="row justify-content-center mt-7">
-          <div class="col-12 text-center">
-
-            <!-- Caption -->
-            <p class="fs-sm text-muted">
-              Showing 16 of 24 products
-            </p>
-
-            <!-- Progress -->
-            <div class="progress mx-auto mb-7" style="max-width: 250px;">
-              <div class="progress-bar bg-dark" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-
-            <!-- Button -->
-            {% if products.has_next %}
-            <a class="btn btn-sm btn-outline-dark" href="{% url "home" products.next_page_number %}">
-              Load more
-            </a>
-            {% endif %}
-
+  
+          <!-- Progress -->
+          <div class="row justify-content-center mt-7">
+              <div class="col-12 text-center">
+  
+                  <!-- Caption -->
+                  <p class="fs-sm text-muted">
+                    Showing {{ products.number }} to {{ end_range }} of {{ products.paginator.count }} products
+                  </p>
+  
+                  <!-- Progress -->
+                  <div class="progress mx-auto mb-7" style="max-width: 250px;">
+                      {% comment %} <div class="progress-bar bg-dark" role="progressbar" style="width: {{ products.number|div:products.paginator.num_pages|mul:100 }}%" aria-valuenow="{{ products.number|div:products.paginator.num_pages|mul:100 }}" aria-valuemin="0" aria-valuemax="100"></div> {% endcomment %}
+                  </div>
+  
+                  <!-- Buttons -->
+                  <div class="text-center">
+                      {% if products.has_previous %}
+                      <a class="btn btn-sm btn-outline-dark" href="{% url "home" %}?page=1">
+                          First
+                      </a>
+                      <a class="btn btn-sm btn-outline-dark" href="{% url "home" %}?page={{ products.previous_page_number }}">
+                          Previous
+                      </a>
+                      {% endif %}
+  
+                      {% if products.has_next %}
+                      <a class="btn btn-sm btn-outline-dark" href="{% url "home" %}?page={{ products.next_page_number }}">
+                          Next
+                      </a>
+                      {% else %}
+                      <button class="btn btn-sm btn-outline-dark" disabled>
+                          No more products
+                      </button>
+                      {% endif %}
+                  </div>
+              </div>
           </div>
-        </div>
-
+  
       </div>
-    </div>
+  </div>
   </div>
 </div>
 

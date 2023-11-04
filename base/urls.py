@@ -6,6 +6,8 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("page/<int:page>", views.page, name="home"),
     path("product/<int:pk>", views.product, name="product"),
+    path("add_product_page", views.add_product_page, name="add_product_page"),
+    path("add_product", views.add_product, name="add_product"),
     path("about", views.about, name="about"),
     path("contact", views.contact, name="contact"),
     path("faq", views.faq, name="faq"),
@@ -20,5 +22,6 @@ urlpatterns = [
     path("auth", views.auth, name="auth"),
     path("register", views.register_user, name="register"),
     path("login", views.login_user, name="login"),
+    path("logout", views.logout_user, name="logout"),
 ]
 
