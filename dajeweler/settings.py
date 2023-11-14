@@ -94,7 +94,7 @@ USE_TZ = True
 
 STATIC_URL = 'base/static/'
 STATIC_ROOT = 'base'
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
