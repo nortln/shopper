@@ -1,5 +1,11 @@
 {% extends 'master.html' %}
 
+{% block title %}{{product.title}}, brand {{product.brand}}{% endblock title %}
+
+{% block description %}{{product.description}}{% endblock description %}
+{% block keywords %}{{product.title}}, {{product.brand}}, {{product.catalog}}{% endblock keywords %}
+
+
 {% block content %}
 {% load static %}
 
@@ -12,10 +18,10 @@
           <!-- Breadcrumb -->
           <ol class="breadcrumb mb-0 fs-xs text-gray-400">
             <li class="breadcrumb-item">
-              <a class="text-gray-400" href="index.html">Home</a>
+              <a class="text-gray-400" href="{% url "home" %}">Home</a>
             </li>
             <li class="breadcrumb-item">
-              <a class="text-gray-400" href="{% url 'home' %}">{{product.catalog}}</a>
+              <a class="text-gray-400" href="/?category={{product.catalog}}">{{product.catalog}}</a>
             </li>
             <li class="breadcrumb-item active">
               {{product.title}}
@@ -48,7 +54,7 @@
                     </div>
 
                     <!-- Image -->
-                    <img class="card-img-top" src="{% static product.image.url %}" alt="...">
+                    <img class="card-img-top" src="{% static product.image.url %}" alt="{{product.title}}">
 
                   </a>
 
@@ -59,7 +65,7 @@
                   <a class="card mb-4" href="#" data-bigpicture='{ "imgSrc": "{% static product.image2.url %}" }'>
 
                     <!-- Image -->
-                    <img class="card-img-top" src="{% static product.image2.url %}" alt="...">
+                    <img class="card-img-top" src="{% static product.image2.url %}" alt="{{product.title}}">
 
                   </a>
 
@@ -70,7 +76,7 @@
                   <a class="card" href="#" data-bigpicture='{ "imgSrc": "{% static product.image3.url %}" }'>
 
                     <!-- Image -->
-                    <img class="card-img-top" src="{% static product.image3.url %}" alt="...">
+                    <img class="card-img-top" src="{% static product.image3.url %}" alt="{{product.title}}">
 
                   </a>
 
@@ -81,7 +87,7 @@
                   <a class="card" href="#" data-bigpicture='{ "imgSrc": "{% static product.image4.url %}" }'>
 
                     <!-- Image -->
-                    <img class="card-img-top" src="{% static product.image4.url %}" alt="...">
+                    <img class="card-img-top" src="{% static product.image4.url %}" alt="{{product.title}}">
 
                   </a>
 
@@ -129,6 +135,8 @@
 
               <!-- Heading -->
               <h3 class="mb-2">{{product.title}}</h3>
+              <h6 ><b>Brand:</b> {{product.brand}}</h6>
+              <p> Product Id: {{product.id}}</p>
 
               <!-- Price -->
               <div class="mb-7">
@@ -598,7 +606,7 @@
 
               <!-- Text -->
               <p class="mb-0 fs-sm text-muted">
-                From all orders over $100
+                From all orders over $10000
               </p>
 
             </div>
@@ -624,7 +632,7 @@
 
               <!-- Text -->
               <p class="mb-0 fs-sm text-muted">
-                Return money within 30 days
+                Return money within 3 days
               </p>
 
             </div>

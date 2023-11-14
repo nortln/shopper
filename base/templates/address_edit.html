@@ -1,0 +1,108 @@
+﻿{% extends "master.html" %}
+
+{% block title %}Edit Address{% endblock title %}
+
+{% block description %}{% endblock description %}
+
+
+{% block content %}
+  <!-- CONTENT -->
+  <section class="pt-7 pb-12">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+
+          <!-- Heading -->
+          <h3 class="mb-10">My Account</h3>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-3">
+
+          <!-- Nav -->
+          <nav class="mb-10 mb-md-0">
+            <div class="list-group list-group-sm list-group-strong list-group-flush-x">
+              <a class="list-group-item list-group-item-action dropend-toggle " href="{% url "personal-info" %}">
+                Personal Info
+              </a>
+              <a class="list-group-item list-group-item-action dropend-toggle active" href="{% url "address" %}">
+                Addresses
+              </a>
+              <a class="list-group-item list-group-item-action dropend-toggle" href="{% url "logout" %}">
+                Logout
+              </a>
+            </div>
+          </nav>
+
+        </div>
+        <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
+
+          <!-- Heading -->
+          <h6 class="mb-7">
+            Edit Address
+          </h6>
+
+          <!-- Form -->
+          <form method="POST" action="{% url "update_address" %}">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <div class="form-group">
+                  <label class="form-label" for="firstName">First Name *</label>
+                  <input class="form-control" id="firstName" type="text" name="first_name" value="{{request.user.first_name}}" placeholder="First Name" required="">
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="form-group">
+                  <label class="form-label" for="lastName">Last Name *</label>
+                  <input class="form-control" id="lastName" type="text" name="last_name" value="{{request.user.last_name}}" placeholder="Last Name" required="">
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="form-label" for="emailAddress">Email Address *</label>
+                  <input class="form-control" id="emailAddress" type="email" name="email" value="{{request.user.email}}" placeholder="Email Address" required="">
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="form-label" for="country">Country *</label>
+                  <input class="form-control" id="country" type="text" name="country" placeholder="Country" value="Nigeria" >
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="form-label" for="addressLineOne">Address *</label>
+                  <input class="form-control" id="addressLineOne" type="text" name="address" value="{{address.address}}" placeholder="Address" required="">
+                </div>
+              </div>
+              
+              <div class="col-12 col-md-6">
+                <div class="form-group">
+                  <label class="form-label" for="townCity">State / City *</label>
+                  <input class="form-control" id="townCity" type="text" name="state" value="{{address.state}}" placeholder="Town / City" required="">
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="form-label" for="mobilePhone">Mobile Phone *</label>
+                  <input class="form-control" id="mobilePhone" type="tel" name="phone" value="{{address.phone_number}}" placeholder="Mobile Phone" required="">
+                </div>
+              </div>
+             
+            </div>
+
+            <!-- Button -->
+            <button class="btn btn-dark" type="submit">
+              Edit Address
+            </button>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock content %}

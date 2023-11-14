@@ -5,14 +5,17 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 import numpy as np
+import uuid
+from django.core.mail import send_mail
 
 
-from .models import Catalog, Brand, Product, Cart, Review, Color
+from .models import Catalog, Brand, Product, Cart, Review, Color, AddressBook, Verification, Blog
 
 
 def home(request):
     catalog = Catalog.objects.all()
     brands = Brand.objects.all()
+    ## All Sortings
     if request.method == "GET":
         ## Category ##
         item_type = request.GET.get("category")
@@ -20,7 +23,7 @@ def home(request):
             catalog_filtered = Catalog.objects.get(title=item_type)
             products = Product.objects.filter(catalog=catalog_filtered)
         else:
-            products = Product.objects.all()
+            products = Product.objects.all().order_by("-created")
         ## Sorting ##
         selected_sort = request.GET.get("sort")
         if selected_sort:
@@ -31,7 +34,7 @@ def home(request):
             elif selected_sort == "Best Rating":
                 products = Product.review_set.order_by("-rating")
             elif selected_sort == "Default":
-                products = Product.objects.all()    
+                products = Product.objects.all().order_by("-created")  
         ## Brand ##
         brand_type = request.GET.get("brand")
         if brand_type:    
@@ -41,6 +44,7 @@ def home(request):
     paginator = Paginator(products, 8)
     page_obj = paginator.get_page(page)
     end_range = min(page_obj.number + 2, page_obj.paginator.count)
+    
     context = {
         "catalog": catalog,
         "brands": brands,
@@ -53,6 +57,7 @@ def home(request):
 def page(request, page=1):
     catalog = Catalog.objects.all()
     brands = Brand.objects.all()
+    products = Product.objects.all().order_by("-created")
     if request.method == "GET":
         ## Category ##
         item_type = request.GET.get("category")
@@ -60,7 +65,7 @@ def page(request, page=1):
             catalog_filtered = Catalog.objects.get(title=item_type)
             products = Product.objects.filter(catalog=catalog_filtered)
         else:
-            products = Product.objects.all()
+            products = Product.objects.all().order_by("-created")
         ## Sorting ##
         selected_sort = request.GET.get("sort")
         if selected_sort:
@@ -71,7 +76,7 @@ def page(request, page=1):
             elif selected_sort == "Best Rating":
                 products = Product.review_set.order_by("-rating")
             elif selected_sort == "Default":
-                products = Product.objects.all()
+                products = Product.objects.all().order_by("-created")
         ## Brand ##
         brand_type = request.GET.get("brand")
         if brand_type:    
@@ -79,7 +84,8 @@ def page(request, page=1):
             products = Product.objects.filter(brand=brand)
     paginator = Paginator(products, 8)
     page_obj = paginator.get_page(page)
-    end_range = min(page_obj.number + 2, page_obj.paginator.count)
+    end_range = max(page_obj.number + 2, page_obj.paginator.count)
+
 
     context = {
         "catalog": catalog,
@@ -89,6 +95,20 @@ def page(request, page=1):
     }
 
     return render(request, "index.html", context)
+
+
+
+
+#######################################################################3
+#######################################################################3
+#######################################################################3
+## CART, PRODUCT, REVIEW
+#######################################################################3
+#######################################################################3
+#######################################################################3
+
+
+
 
 
 def product(request, pk):
@@ -143,6 +163,7 @@ def add_product_page(request):
 def add_product(request):
     if request.method == "POST":
         title = request.POST['title']
+        description = request.POST['description']
         brand_title = request.POST['brand']
         color_title = request.POST['color']
         catalog_title = request.POST['catalog']
@@ -158,6 +179,7 @@ def add_product(request):
         image4 = image_list[3]
 
         product_instance = Product(title=title,
+                                   description=description,
                                    brand=brand,
                                    catalog=catalog,
                                    color=color,
@@ -172,6 +194,7 @@ def add_product(request):
  
     return redirect("home")
 
+@login_required(login_url="auth")
 def add_cart(request, pk):
     if request.method == "POST":
         product = Product.objects.get(id=pk)
@@ -190,6 +213,7 @@ def add_cart(request, pk):
     return redirect(request.META.get("HTTP_REFERER"))
 
 
+@login_required(login_url="auth")
 def update_cart(request, pk):
     product = get_object_or_404(Product, id=pk)
     cart = get_object_or_404(Cart, product=product, user=request.user)
@@ -200,6 +224,8 @@ def update_cart(request, pk):
 
     return redirect(request.META.get("HTTP_REFERER"))
 
+
+@login_required(login_url="auth")
 def add_review(request, pk):
     product = Product.objects.get(id=pk)
 
@@ -247,36 +273,162 @@ def faq(request):
     return render(request, "faq.html")
 
 
+
+
+#######################################################################3
+#######################################################################3
+#######################################################################3
+## Blog
+#######################################################################3
+#######################################################################3
+#######################################################################3
+
+def blog(request, page=1):
+    blogs = Blog.objects.all()
+    paginator = Paginator(blogs, 4)
+    page = request.GET.get("page")
+    blog_obj = paginator.get_page(page)
+    context = {
+        "blogs": blogs,
+        "blog_obj": blog_obj, 
+    }
+    return render(request, "blog.html", context)
+
+
+def blog_post(request, pk):
+    blog = Blog.objects.get(id=pk)
+    context = {
+        "blog": blog,
+    }
+    blogs = Blog.objects.all()
+    return render(request, "blog-post.html", context)
+
+
+
+#######################################################################3
+#######################################################################3
+#######################################################################3
+## PERSONAL INFO UPDATE
+#######################################################################3
+#######################################################################3
+#######################################################################3
+
+
+
+
+@login_required(login_url="auth")
 def personal_info(request):
     return render(request, "personal_info.html")
+
+
+@login_required(login_url="auth")
+def update_personal_info(request):
+    if request.method == "POST":
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        email = request.POST['email']
+        username = request.POST['username']
+        current_password = request.POST['current_password']
+        new_password = request.POST['new_password']
+
+    return redirect("personal-info")
+
+
 
 def payment_choose(request):
     return render(request, "payment-choose.html")
 
+
+
+
+#######################################################################3
+#######################################################################3
+#######################################################################3
+## ADDRES EDIT
+#######################################################################3
+#######################################################################3
+#######################################################################3
+
+
+
+
+
 def address(request):
-    return render(request, "address.html")
+    addresses = AddressBook.objects.get_or_create(user=request.user)
+    address = AddressBook.objects.get(user=request.user)
+    context = {
+        "address": address,
+    }
+    return render(request, "address.html", context)
 
 def address_edit(request):
-    return render(request, "address-edit.html")
+    address = AddressBook.objects.get(user=request.user)
+    context = {
+        "address": address,
+    }
+    return render(request, "address_edit.html", context)
+
+@login_required(login_url="home")
+def update_address(request):
+    if request.method == "POST":
+        country = request.POST["country"]
+        address = request.POST['address']
+        state = request.POST['state']
+        phone_number = request.POST['phone']
+        address_book = AddressBook.objects.get(user=request.user)
+        address_book.country = country
+        address_book.address = address
+        address_book.state = state
+        address_book.phone_number = phone_number
+        address_book.save()
+    return redirect('address')
+    
+
+#######################################################################3
+#######################################################################3
+#######################################################################3
+## AUTHENTICATION, LOGIN, LOGOUT, REGISTER, VERIFICATION, Email Sending
+#######################################################################3
+#######################################################################3
+#######################################################################3
 
 
 def auth(request):
     return render(request, "auth.html")
 
 
-def login_user(request):
-    if request.method == "POST":
-         # email = request.POST["login_email"]
-         username = request.POST["login_username"]
-         password = request.POST["login_password"]
-         
-         user = authenticate(request, username=username.lower(), password=password)
-         if user is not None:
-            login(request, user)
-            return redirect("home")
-         else:
-             return render(request, "auth.html", {"error_message": "Invalid Credentials"})
-    return render(request, "auth.html")
+def generate_verification_token(user):
+    verification_token = uuid.uuid4().hex
+    Verification.objects.create(email=user.email, token=verification_token, user=user)
+    return verification_token
+
+
+def send_verification_email(user, verification_token):
+    subject = "Verify your email address"
+    message = "Please click on the following link to verify your email address: "
+    url = "http://127.0.0.1:8000/verify/{}".format(verification_token)
+
+    send_mail(subject, message, "clintontristanacje@gmail.com", [user.email])
+
+
+def activate_account(request, token):
+    verification = Verification.objects.filter(token=token).first()
+    if verification:
+        user = verification.user
+        user.is_active = True
+        user.save()
+        login(request, user)
+        verification.delete()
+        return redirect("home")
+    else:
+        return redirect("verify_page")
+
+
+
+
+def verify_page(request):
+    return render(request, "verify_page.html")
+
 
 
 def register_user(request):
@@ -304,9 +456,11 @@ def register_user(request):
                     user.last_name = last_name
                     user.email = email
                     user.set_password(password)
+                    user.is_active = False
                     user.save()
-                    login(request, user)
-                    return redirect("home")
+                    token = generate_verification_token(user)
+                    send_verification_email(user, token)
+                    return render(request, "verify_page.html")
             else:
                 context = {
                     "register_error_message": "Email Already Exists",
@@ -319,6 +473,24 @@ def register_user(request):
             return render(request, "auth.html", context)
     
     return render(request, "auth.html")
+
+
+
+
+def login_user(request):
+    if request.method == "POST":
+         # email = request.POST["login_email"]
+         username = request.POST["login_username"]
+         password = request.POST["login_password"]
+         
+         user = authenticate(request, username=username.lower(), password=password)
+         if user is not None:
+            login(request, user)
+            return redirect("home")
+         else:
+             return render(request, "auth.html", {"error_message": "Invalid Credentials"})
+    return render(request, "auth.html")
+
 
 
 def logout_user(request):

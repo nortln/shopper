@@ -1,5 +1,9 @@
 {% extends 'master.html' %}
 {% load static %}
+
+{% block title %}Jahz Collections{% endblock title %}
+{% block description %}The No 1. Store for all your Jeweleries.{% endblock description %}
+{% block keywords %}Gold, Diamond, Cartier, Hublot, Jahz Collections, Jeweleries Nigeria, Cheap Jeweleries, Legit Jewelery Store{% endblock keywords %}
 {% block content %}
 
 
@@ -43,9 +47,7 @@
     <div class="row">
       <div class="col-12">
 
-        <!-- Heading -->
-        <h3 class="mb-10 text-center">Catalog</h3>
-
+       
         <!-- Slider -->
         <div class="flickity-buttons-lg flickity-buttons-offset px-lg-12" data-flickity='{"prevNextButtons": true}'>
 
@@ -62,8 +64,8 @@
               <div class="card-body py-4 px-0 text-center">
                 
                 <!-- Heading -->
-                <a class="stretched-link text-body" href="#!">
-                  <h6>{{item.title}}</h6>
+                <a class="stretched-link text-body" href="/?category={{item.title}}" >
+                    <h6>{{item.title}}</h6>
                 </a>
                 
               </div>
@@ -238,11 +240,12 @@
 
       </div>
     </div>
-    <div class="row">
+    <div class="row" id="productRow">
       {% for product in products %}
       <div class="col-6 col-md-4 col-lg-3">
         
         <!-- Card -->
+        
         <div class="card mb-7">
           
           <!-- Image -->
@@ -255,22 +258,25 @@
             </button>
             
             <!-- Button -->
-            <a class="btn btn-xs w-100 btn-dark card-btn"  data-bs-toggle="modal" data-bs-target="#modalProduct" href="{% url "product" product.id %}">
+            <a class="btn btn-xs w-100 btn-dark card-btn" href="{% url "product" product.id %}">
               <i class="fe fe-eye me-2 mb-1"></i> Quick View
             </a>
-          
-            <!-- Image -->
-            <img class="card-img-top" src="{% static product.image %}" alt="..." height="300" width="220">
+            
+            <a href="{% url "product" product.id %}">
+              <!-- Image -->
+              <img class="card-img-top" src="{% static product.image %}" alt="..." height="300" width="220">
+            </a>
+              
+            </div>
+            
+            <!-- Body -->
+            <div class="card-body fw-bold text-center">
+              <a class="text-body" href="{% url "product" product.id %}">{{product.title}}</a>
+              <div class="text-info">${{product.price}}</div>
+        
+            </div>
             
           </div>
-          
-          <!-- Body -->
-          <div class="card-body fw-bold text-center">
-            <a class="text-body" href="{% url "product" product.id %}">{{product.title}}</a>
-            <div class="text-info">${{product.price}}</div>
-          </div>
-          
-        </div>
         
       </div>
       {% endfor %}

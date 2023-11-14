@@ -2,24 +2,16 @@
 
 {% load static %}
 
-{% block title %}{% endblock title %}
+{% block title %}Cart{% endblock title %}
 
 {% block description %}
-
+Cart
 {% endblock description %}
 
 {% block content %}
 <section class="pt-7 pb-12">
     <div class="container">
-      <div class="row">
-        <div class="col-12">
-
-          <!-- Heading -->
-          <h3 class="mb-10 text-center">Cart</h3>
-
-        </div>
-      </div>
-
+    
       {% for cart in carts %}
       <form method="post" action="{% url "update_cart" cart.product.id %}">
         {% csrf_token %}
@@ -35,7 +27,7 @@
                 <div class="col-3">
 
                   <!-- Image -->
-                  <a href="product.html">
+                  <a href="{% url "product" cart.product.id %}">
                     <img src="{% static cart.product.image.url %}" alt="..." class="img-fluid">
                   </a>
 
@@ -44,7 +36,7 @@
 
                   <!-- Title -->
                   <div class="d-flex mb-2 fw-bold">
-                    <a class="text-body" href="product.html">{{cart.product.title}}</a> <span class="ms-auto">${{cart.product.price}}</span>
+                    <a class="text-body" href="{% url "product" cart.product.id %}">{{cart.product.title}}</a> <span class="ms-auto">${{cart.product.price}}</span>
                   </div>
 
                   <!-- Text -->

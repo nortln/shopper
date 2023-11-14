@@ -1,5 +1,7 @@
 {% extends 'master.html' %}
 
+{% block title %}Profile{% endblock title %}
+
 {% block content %}
   <!-- BREADCRUMB -->
   <nav class="py-5">
@@ -39,19 +41,14 @@
           <!-- Nav -->
           <nav class="mb-10 mb-md-0">
             <div class="list-group list-group-sm list-group-strong list-group-flush-x">
-              <a class="list-group-item list-group-item-action dropend-toggle " href="{% url 'wishlist' %}">
-                Wishlist
-              </a>
+             
               <a class="list-group-item list-group-item-action dropend-toggle " href="{% url 'personal-info' %}">
                 Personal Info
               </a>
               <a class="list-group-item list-group-item-action dropend-toggle active" href="{% url 'address' %}">
                 Addresses
               </a>
-              <a class="list-group-item list-group-item-action dropend-toggle " href="{% url 'payment-choose' %}">
-                Payment Methods
-              </a>
-              <a class="list-group-item list-group-item-action dropend-toggle" href="#!">
+              <a class="list-group-item list-group-item-action " href="{% url "logout" %}">
                 Logout
               </a>
             </div>
@@ -61,7 +58,8 @@
         <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
 
           <!-- Form -->
-          <form>
+          <form method="POST" action="">
+            {% csrf_token %}
             <div class="row">
               <div class="col-12 col-md-6">
 
@@ -70,7 +68,7 @@
                   <label class="form-label" for="accountFirstName">
                     First Name *
                   </label>
-                  <input class="form-control form-control-sm" id="accountFirstName" type="text" placeholder="First Name *" value="Daniel" required="">
+                  <input class="form-control form-control-sm" name="first_name" id="accountFirstName" type="text" placeholder="First Name *" value="{{request.user.first_name}}" required="">
                 </div>
 
               </div>
@@ -81,18 +79,29 @@
                   <label class="form-label" for="accountLastName">
                     Last Name *
                   </label>
-                  <input class="form-control form-control-sm" id="accountLastName" type="text" placeholder="Last Name *" value="Robinson" required="">
+                  <input class="form-control form-control-sm" name="last_name" id="accountLastName" type="text" placeholder="Last Name *" value="{{request.user.last_name}}" required="">
                 </div>
 
               </div>
-              <div class="col-12">
+              <div class="col-12 col-md-6">
 
                 <!-- Email -->
                 <div class="form-group">
                   <label class="form-label" for="accountEmail">
                     Email Address *
                   </label>
-                  <input class="form-control form-control-sm" id="accountEmail" type="email" placeholder="Email Address *" value="user@email.com" required="">
+                  <input class="form-control form-control-sm" id="accountEmail" name="email" type="email" placeholder="Email Address *" value="{{request.user.email}}" required="">
+                </div>
+
+              </div>
+              <div class="col-12 col-md-6">
+
+                <!-- Email -->
+                <div class="form-group">
+                  <label class="form-label" for="accountUsername">
+                    Username *
+                  </label>
+                  <input class="form-control form-control-sm" id="accountUsername" name="username" type="text" placeholder="Username *" value="{{request.user.username}}" required="">
                 </div>
 
               </div>
@@ -103,7 +112,7 @@
                   <label class="form-label" for="accountPassword">
                     Current Password *
                   </label>
-                  <input class="form-control form-control-sm" id="accountPassword" type="password" placeholder="Current Password *" required="">
+                  <input class="form-control form-control-sm" id="accountPassword" name="current_password" type="password" placeholder="Current Password *" required="">
                 </div>
 
               </div>
@@ -114,88 +123,11 @@
                   <label class="form-label" for="AccountNewPassword">
                     New Password *
                   </label>
-                  <input class="form-control form-control-sm" id="AccountNewPassword" type="password" placeholder="New Password *" required="">
+                  <input class="form-control form-control-sm" id="AccountNewPassword" name="new_password" type="password" placeholder="New Password *" required="">
                 </div>
 
               </div>
-              <div class="col-12 col-lg-6">
-
-                <!-- Birthday -->
-                <div class="form-group">
-
-                  <!-- Label -->
-                  <label class="form-label">Date of Birth</label>
-
-                  <!-- Inputs -->
-                  <div class="row gx-5">
-                    <div class="col-auto">
-
-                      <!-- Date -->
-                      <label class="visually-hidden" for="accountDate">
-                        Date
-                      </label>
-                      <select class="form-select form-select-sm" id="accountDate">
-                        <option>10</option>
-                        <option>11</option>
-                        <option selected="">12</option>
-                      </select>
-
-                    </div>
-                    <div class="col">
-
-                      <!-- Date -->
-                      <label class="visually-hidden" for="accountMonth">
-                        Month
-                      </label>
-                      <select class="form-select form-select-sm" id="accountMonth">
-                        <option>January</option>
-                        <option selected="">February</option>
-                        <option>March</option>
-                      </select>
-
-                    </div>
-                    <div class="col-auto">
-
-                      <!-- Date -->
-                      <label class="visually-hidden" for="accountYear">
-                        Year
-                      </label>
-                      <select class="form-select form-select-sm" id="accountYear">
-                        <option>1990</option>
-                        <option selected="">1991</option>
-                        <option>1992</option>
-                      </select>
-
-                    </div>
-                  </div>
-
-                </div>
-
-              </div>
-              <div class="col-12 col-lg-6">
-
-                <!-- Gender -->
-                <div class="form-group mb-8">
-
-                  <!-- Label -->
-                  <label class="form-label">Gender</label>
-
-                  <!-- Inputs -->
-                  <div>
-
-                    <!-- Male -->
-                    <input class="btn-check" type="radio" name="gender" id="male" checked="">
-                    <label class="btn btn-sm btn-outline-border" for="male">Male</label>
-
-                    <!-- Female -->
-                    <input class="btn-check" type="radio" name="gender" id="female">
-                    <label class="btn btn-sm btn-outline-border" for="female">Female</label>
-
-                  </div>
-
-                </div>
-
-              </div>
+           
               <div class="col-12">
 
                 <!-- Button -->

@@ -2,6 +2,8 @@
 
 {% load static %}
 
+{% block title %}Blog{% endblock title %}
+
 {% block content %}
 <section class="pt-7 pb-12">
     <div class="container">
@@ -11,14 +13,7 @@
           <!-- Heading -->
           <h3 class="mb-7 text-center">Our Blog</h3>
 
-          <!-- Nav -->
-          <nav class="nav justify-content-center mb-10">
-            <a class="nav-link active" href="#">All</a>
-            <a class="nav-link" href="#">Company</a>
-            <a class="nav-link" href="#">Brand</a>
-            <a class="nav-link" href="#">Fashion</a>
-            <a class="nav-link" href="#">Shop</a>
-          </nav>
+   
 
         </div>
       </div>
@@ -32,11 +27,11 @@
 
             <!-- Badge -->
             <div class="badge bg-white text-body card-badge">
-              <time class="text-uppercase" datetime="2019-06-20">{{blog.created}}</time>
+              <time class="text-uppercase" datetime="2019-06-20">{{blog.date}}</time>
             </div>
 
             <!-- Image -->
-            <img class="card-img-top" src="{% static blog.image.url %}" alt="...">
+            <img class="card-img-top" src="{% static blog.image.url %}" alt="{{blog.title}}">
 
             <!-- Body -->
             <div class="card-body px-0">
@@ -45,12 +40,12 @@
               <h5>{{blog.title}}</h5>
 
               <!-- Text -->
-              <p class="mb-0 text-gray-500">
-               {{blog.description}}
-              </p>
+              {% comment %} <p class="mb-0 text-gray-500">
+               {{blog.summary}}
+              </p> {% endcomment %}
 
               <!-- Button -->
-              <a class="btn btn-link stretched-link px-0 text-reset" href="blog-post.html">
+              <a class="btn btn-link stretched-link px-0 text-reset" href="{% url "blog_post" blog.id %}">
                 Read More <i class="fe fe-arrow-right ms-2"></i>
               </a>
 
