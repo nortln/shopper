@@ -21,7 +21,7 @@
               <a class="text-gray-400" href="{% url "home" %}">Home</a>
             </li>
             <li class="breadcrumb-item">
-              <a class="text-gray-400" href="/?category={{product.catalog}}">{{product.catalog}}</a>
+              <a class="text-gray-400" href="{% url "category" product.catalog %}">{{product.catalog}}</a>
             </li>
             <li class="breadcrumb-item active">
               {{product.title}}

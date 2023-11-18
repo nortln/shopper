@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{% static 'favicon/favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'favicon/logo_2.jpg' %}" type="image/x-icon">
     
     <!-- Libs CSS -->
     <link rel="stylesheet" href="{% static 'css/libs.bundle.css' %}" type="text/css">
@@ -274,17 +274,18 @@
                   <!-- Links -->
                   <ul class="list-inline mb-0">
                     <li class="list-inline-item me-xl-7">
-                      <a class="text-gray-300" href="contact-us.html">Contact Us</a>
+                      <a class="text-gray-300" href="{% url "contact" %}">Contact Us</a>
                     </li>
                     <li class="list-inline-item me-xl-7">
-                      <a class="text-gray-300" href="faq.html">FAQs</a>
-                    </li>
-                    <li class="list-inline-item me-xl-7">
-                      <a class="text-gray-300" href="shipping-and-returns.html">Shipping & Returns</a>
+                      <a class="text-gray-300" href="{% url "faq" %}">FAQs</a>
                     </li>
           
-                    <li class="list-inline-item">
-                      <a class="text-gray-300" href="about.html">Our Story</a>
+                    <li class="list-inline-item me-xl-7">
+                      <a class="text-gray-300" href="{% url "about" %}">Our Story  </a>
+                    </li>
+
+                    <li class="list-inline-item me-xl-7">
+                      <a class="text-gray-300" href="{% url "sell" %}">Sell your Jewleries</a>
                     </li>
                   </ul>
           

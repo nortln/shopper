@@ -38,7 +38,8 @@ Cart
                   <div class="d-flex mb-2 fw-bold">
                     <a class="text-body" href="{% url "product" cart.product.id %}">{{cart.product.title}}</a> <span class="ms-auto">${{cart.product.price}}</span>
                   </div>
-
+                  
+                  <span><b>Id:</b> {{cart.product.id}}</span>
                   <!-- Text -->
                   <p class="mb-7 fs-sm text-muted">
                     Quantity: {{cart.quantity}} 

@@ -63,8 +63,9 @@
               <!-- Body -->
               <div class="card-body py-4 px-0 text-center">
                 
+              
                 <!-- Heading -->
-                <a class="stretched-link text-body" href="/?category={{item.title}}" >
+                <a class="stretched-link text-body" href="{% url "category" item.title %}">
                     <h6>{{item.title}}</h6>
                 </a>
                 
@@ -250,13 +251,7 @@
           
           <!-- Image -->
           <div class="card-img">
-            
-            <!-- Action -->
-            <button class="btn btn-xs btn-circle btn-light card-action card-action-end" data-toggle="button">
-              {% comment %} <i class="fa-sharp fa-regular fa-cart-shopping fa-xl"></i> {% endcomment %}
-              <img src="{% static "favicon/shopping-cart.svg" %}">
-            </button>
-            
+
             <!-- Button -->
             <a class="btn btn-xs w-100 btn-dark card-btn" href="{% url "product" product.id %}">
               <i class="fe fe-eye me-2 mb-1"></i> Quick View
@@ -264,7 +259,7 @@
             
             <a href="{% url "product" product.id %}">
               <!-- Image -->
-              <img class="card-img-top" src="{% static product.image %}" alt="..." height="300" width="220">
+              <img class="card-img-top" src="{% static product.image %}" alt="{{product.title}}" height="300" width="220">
             </a>
               
             </div>
@@ -272,7 +267,7 @@
             <!-- Body -->
             <div class="card-body fw-bold text-center">
               <a class="text-body" href="{% url "product" product.id %}">{{product.title}}</a>
-              <div class="text-info">${{product.price}}</div>
+              <div class="text-black">${{product.price}}</div>
         
             </div>
             
@@ -282,8 +277,8 @@
       {% endfor %}
     
     </div>
-    {% if request.user == 'clinton' %}
-    <a>Add Product</a>
+    {% if request.user.is_superuser %}
+    <a href="{% url "add_product_page" %}" class="btn btn-secondary">Add Product</a>
     {% endif %}
     
     <div class="row">
@@ -320,7 +315,7 @@
                       </a>
                       {% else %}
                       <button class="btn btn-sm btn-outline-dark" disabled>
-                          No more products
+                          Next
                       </button>
                       {% endif %}
                   </div>

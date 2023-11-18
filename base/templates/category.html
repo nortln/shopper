@@ -1,0 +1,125 @@
+{% extends "master.html" %}
+
+{% load static %}
+
+{% block title %}{{catalog.title}}{% endblock title %}
+
+{% block description %}{% endblock description %}
+
+
+{% block content %}
+<section class="py-11">
+    <div class="container">
+      <div class="row">
+       
+        <div class="col-12 col-md-8 col-lg-11">
+ 
+          <!-- Header -->
+          <div class="row align-items-center mb-7">
+            <div class="col-12 col-md">
+
+              <!-- Heading -->
+              <h3 class="mb-1">{{catalog.title}}</h3>
+
+              <!-- Breadcrumb -->
+              <ol class="breadcrumb mb-md-0 fs-xs text-gray-400">
+                <li class="breadcrumb-item">
+                  <a class="text-gray-400" href="/">Home</a>
+                </li>
+                <li class="breadcrumb-item active">
+                  {{catalog.title}}
+                </li>
+              </ol>
+
+            </div>
+            {% comment %} <div class="col-12 col-md-auto">
+
+              <!-- Select -->
+              <select class="form-select form-select-xs">
+                <option selected="">Most popular</option>
+              </select>
+
+            </div> {% endcomment %}
+          </div>
+
+          <span class="text-lg">
+              {{length}} {{catalog.title}} Found
+          </span>
+          <!-- Products -->
+          <div class="row">
+            {% for product in products %}
+            <div class="col-6 col-md-4">
+
+              <!-- Card -->
+              <div class="card mb-7">
+
+             
+
+                <!-- Image -->
+                <div class="card-img">
+
+                  <!-- Image -->
+                  <a class="card-img-hover" href="{% url "product" product.id %}">
+                    <img class="card-img-top card-img-back" src="{% static product.image.url %}" alt="{{product.title}}">
+                    <img class="card-img-top card-img-front" src="{% static product.image.url %}" alt="{{product.title}}">
+                  </a>
+
+                </div>
+
+                <!-- Body -->
+                <div class="card-body px-0">
+
+                  <!-- Category -->
+                  <div class="fs-xs">
+                    <a class="text-muted" href="">{{product.brand}}</a>
+                  </div>
+
+                  <!-- Title -->
+                  <div class="fw-bold">
+                    <a class="text-body" href="{% url "product" product.id %}">
+                      {{product.title}}
+                    </a>
+                  </div>
+
+                  <!-- Price -->
+                  <div class="fw-bold text-muted">
+                    ${{product.price}}
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+            {% endfor %}
+          
+          </div>
+
+          <!-- Pagination -->
+          <nav class="d-flex justify-content-center justify-content-md-end">
+            <ul class="pagination pagination-sm text-gray-400">
+              <li class="page-item">
+                <a class="page-link page-link-arrow" href="#">
+                  <i class="fa fa-caret-left"></i>
+                </a>
+              </li>
+
+              {% for x in numbers %}
+              <li class="page-item active">
+                <a class="page-link" href="{% url "category" x %}">{{x}}</a>
+              </li>
+              {% endfor %}
+              
+              <li class="page-item">
+                <a class="page-link page-link-arrow" href="#">
+                  <i class="fa fa-caret-right"></i>
+                </a>
+              </li>
+            </ul>
+          </nav> 
+
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}

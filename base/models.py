@@ -61,7 +61,7 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True, auto_created=True, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.title}"
+        return f"{self.title} -- {self.id}"
 
 
 

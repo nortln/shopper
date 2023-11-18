@@ -54,7 +54,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "dajeweler.wsgi.application"
 
 
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -62,6 +61,17 @@ DATABASES = {
     }
 }
 
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',
+#         'USER': 'masteruser',
+#         'PASSWORD': '08116815735Cl',
+#         'HOST': 'jahz-collections-database.ce1t4pbxukgd.eu-north-1.rds.amazonaws.com',
+#         'PORT': '5432'
+#     }
+# }
 
 
 AUTH_PASSWORD_VALIDATORS = [

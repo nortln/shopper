@@ -102,7 +102,7 @@ def page(request, page=1):
 #######################################################################3
 #######################################################################3
 #######################################################################3
-## CART, PRODUCT, REVIEW
+## CART, PRODUCT, REVIEW, CATEGORIES
 #######################################################################3
 #######################################################################3
 #######################################################################3
@@ -117,7 +117,7 @@ def product(request, pk):
     revie = product.review_set.all()
     review = product.review_set.all()
     reviews = product.review_set.all().order_by('-id')[:4]
-    recommended = Product.objects.filter(catalog=product.catalog).exclude(id=pk)
+    recommended = Product.objects.filter(catalog=product.catalog).exclude(id=pk).order_by("-created")[:3]
     print(recommended)
     all = []
     
@@ -225,6 +225,30 @@ def update_cart(request, pk):
     return redirect(request.META.get("HTTP_REFERER"))
 
 
+    
+@login_required(login_url="auth")
+def cart(request):
+    carts = Cart.objects.filter(user=request.user)
+    for cart in carts:
+        if cart.quantity == 0:
+            cart.delete()
+            return redirect(request.META.get("HTTP_REFERER"))
+    total_price = []
+    for cart in carts:
+        total = cart.quantity * cart.product.price
+        total_price.append(total)
+
+    total = sum(total_price)
+
+    context = {
+        "carts": carts,
+        "total": total,
+    }
+    return render(request, "cart.html", context)
+
+
+
+
 @login_required(login_url="auth")
 def add_review(request, pk):
     product = Product.objects.get(id=pk)
@@ -244,27 +268,14 @@ def add_review(request, pk):
     return HttpResponseRedirect(redirect_to=request.META.get('HTTP_REFERER'))
     
 
-    
-@login_required(login_url="auth")
-def cart(request):
-    carts = Cart.objects.filter(user=request.user)
-    total_price = []
-    for cart in carts:
-        total = cart.quantity * cart.product.price
-        total_price.append(total)
-
-    total = sum(total_price)
-
-    context = {
-        "carts": carts,
-        "total": total,
-    }
-    return render(request, "cart.html", context)
-
 
 
 def about(request):
-    return render(request, "about.html")
+    reviews = Review.objects.all()[:5]
+    context = {
+        "reviews": reviews,
+    }
+    return render(request, "about.html", context)
 
 def contact(request):
     return render(request, "contact.html")
@@ -272,6 +283,24 @@ def contact(request):
 def faq(request):
     return render(request, "faq.html")
 
+def sell(request):
+    return render(request, "sell.html")
+
+import math
+
+def category(request, pk):
+    
+    catalog = Catalog.objects.get(title=pk)
+    products = Product.objects.filter(catalog=catalog).order_by("-created")
+    length = len(products)
+   
+    
+    context = {
+        "products": products,
+        "catalog": catalog,
+        "length": length,
+    }
+    return render(request, "category.html", context)
 
 
 
@@ -284,7 +313,7 @@ def faq(request):
 #######################################################################3
 
 def blog(request, page=1):
-    blogs = Blog.objects.all()
+    blogs = Blog.objects.order_by("-date")[:8]
     paginator = Paginator(blogs, 4)
     page = request.GET.get("page")
     blog_obj = paginator.get_page(page)
